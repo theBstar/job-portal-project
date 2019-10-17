@@ -15,7 +15,7 @@ class Candidate {
     return true;
   }
 
-  static create(candidateData) {
+  static async create(candidateData) {
     const query = `INSERT INTO Candidate (uid, dob, experience, highestEducation) 
       VALUES (
         '${candidateData.uid}', 

@@ -1,9 +1,9 @@
 const con = require('./connection');
 
 // User role:
-//   # 0 - Admin
-//   # 1 - Recruiter
-//   # 2 - Candidate
+//   # 1 - Admin
+//   # 2 - Recruiter
+//   # 3 - Candidate
 
 class User {
   static init() {
@@ -11,7 +11,7 @@ class User {
       uid INT NOT NULL,
       name VARCHAR(255),
       mobile INT CHECK (mobile > 6666666666 AND mobile < 9999999999),
-      role INT CHECK (role IN (0, 1, 2)),
+      role INT CHECK (role IN (1, 2, 3)),
       address VARCHAR(600),
       FOREIGN KEY (uid) REFERENCES ACCOUNT(uid)
     )`;
@@ -28,7 +28,7 @@ class User {
     }
   }
 
-  static create(userData) {
+  static async create(userData) {
     const query = `INSERT INTO User (uid, name, mobile, role, address) 
       VALUES (
         '${userData.uid}',

@@ -15,7 +15,7 @@ class Application {
     return true;
   }
 
-  static create(applicationData) {
+  static async create(applicationData) {
     const query = `INSERT INTO Application (jid, uid, status) 
       VALUES (
         '${applicationData.jid}', 

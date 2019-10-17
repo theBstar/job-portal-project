@@ -20,7 +20,7 @@ class Recruiter {
     return true;
   }
 
-  static create(recruiterData) {
+  static async create(recruiterData) {
     const query = `INSERT INTO Recruiter (uid, position, status, company) 
       VALUES (
         '${recruiterData.uid}', 

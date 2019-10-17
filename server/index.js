@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { userRouter } = require('./controller');
+const { userRouter, authRouter } = require('./controller');
 const {
   Account,
   User,
@@ -35,6 +35,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.use('/user', userRouter);
+app.use('/auth', authRouter);
 
 app.get('/*', async (req, res) => {
   // console.log('Got a request');
@@ -43,4 +44,9 @@ app.get('/*', async (req, res) => {
   res.send('<h1>Hi from the app</h1>');
 });
 
-module.exports = app;
+
+module.exports = function startServer(PORT) {
+  app.listen(PORT, () => {
+    process.stdout.write(`\n\n******Server started on ${PORT}********\n\n`);
+  });
+};

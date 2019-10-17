@@ -17,7 +17,7 @@ class Job {
     return true;
   }
 
-  static create(jobData) {
+  static async create(jobData) {
     const query = `INSERT INTO Job (addedBy, title, description, location, tags) 
       VALUES (
         '${jobData.addedBy}', 
