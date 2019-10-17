@@ -3,7 +3,7 @@ const con = require('./connection');
 class Account {
   static init() {
     const createAccountTableQuery = `CREATE TABLE IF NOT EXISTS Account(
-      uid INT AUTOINCREMENT NOT NULL,
+      uid INT AUTO_INCREMENT NOT NULL,
       email VARCHAR(255),
       password VARCHAR(255),
       token VARCHAR(16),

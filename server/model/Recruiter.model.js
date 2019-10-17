@@ -12,7 +12,7 @@ class Recruiter {
       position VARCHAR(255),
       status INT CHECK (status IN (0, 1, 2)),
       company VARCHAR(255),
-      FOREIGN KEY (uid) REFERENCES ACCOUNT(uid)
+      FOREIGN KEY (uid) REFERENCES Account(uid)
     )`;
     con.query(createRecruiterTableQuery, (error) => {
       if (error) throw error;

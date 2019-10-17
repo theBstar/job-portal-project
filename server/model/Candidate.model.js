@@ -7,7 +7,7 @@ class Candidate {
       dob DATE,
       experience INT,
       highestEducation VARCHAR(255),
-      FOREIGN KEY (uid) REFERENCES ACCOUNT(uid)
+      FOREIGN KEY (uid) REFERENCES Account(uid)
     )`;
     con.query(createCandidateTableQuery, (error) => {
       if (error) throw error;

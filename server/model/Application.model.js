@@ -6,7 +6,7 @@ class Application {
       jid INT NOT NULL,
       uid INT NOT NULL,
       status INT CHECK (status IN (0, 1, 2)),
-      FOREIGN KEY (uid) REFERENCES ACCOUNT(uid),
+      FOREIGN KEY (uid) REFERENCES Account(uid),
       FOREIGN KEY (jid) REFERENCES Job(jid)
     )`;
     con.query(createApplicationTableQuery, (error) => {

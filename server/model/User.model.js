@@ -13,14 +13,11 @@ class User {
       mobile INT CHECK (mobile > 6666666666 AND mobile < 9999999999),
       role INT CHECK (role IN (1, 2, 3)),
       address VARCHAR(600),
-      FOREIGN KEY (uid) REFERENCES ACCOUNT(uid)
+      FOREIGN KEY (uid) REFERENCES Account(uid)
     )`;
     try {
-      con.connect((conError) => {
-        if (conError) throw conError;
-        con.query(createUserTableQuery, (error) => {
-          if (error) throw error;
-        });
+      con.query(createUserTableQuery, (error) => {
+        if (error) throw error;
       });
       return true;
     } catch (e) {
