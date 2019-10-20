@@ -1,3 +1,3 @@
-const Auth = require('./Auth.service');
+const Auth = require('./Auth');
 
 exports.Auth = Auth;

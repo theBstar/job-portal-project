@@ -8,10 +8,10 @@ const con = require('./connection');
 class Recruiter {
   static init() {
     const createRecruiterTableQuery = `CREATE TABLE IF NOT EXISTS Recruiter(
-      uid INT NOT NULL,
-      position VARCHAR(255),
-      status INT CHECK (status IN (0, 1, 2)),
-      company VARCHAR(255),
+      uid INT NOT NULL UNIQUE,
+      position VARCHAR(255) NOT NULL,
+      status INT NOT NULL,
+      company VARCHAR(255) NOT NULL,
       FOREIGN KEY (uid) REFERENCES Account(uid)
     )`;
     con.query(createRecruiterTableQuery, (error) => {
@@ -29,19 +29,15 @@ class Recruiter {
         '${recruiterData.company}'
       )
     `;
-    try {
-      let id = null;
-      con.connect((conError) => {
-        if (conError) throw conError;
-        con.query(query, (error, result) => {
-          if (error) throw error;
-          id = result.insertId;
-        });
+
+    const success = await new Promise((resolve) => {
+      con.query(query, (error) => {
+        if (error) throw error;
+        // id = result.insertId;
+        resolve(true);
       });
-      return id;
-    } catch (error) {
-      return null;
-    }
+    });
+    return success;
   }
 }
 

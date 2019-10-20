@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { userRouter, authRouter } = require('./controller');
+const { userRouter, authRouter, accountRouter } = require('./controller');
 const {
   Account,
   User,
@@ -29,11 +29,12 @@ try {
 }
 
 const app = express();
-
-app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cors());
 app.use(express.static(path.join(__dirname, '../client/build')));
 
+app.use('/account', accountRouter);
 app.use('/user', userRouter);
 app.use('/auth', authRouter);
 
@@ -47,6 +48,6 @@ app.get('/*', async (req, res) => {
 
 module.exports = function startServer(PORT) {
   app.listen(PORT, () => {
-    process.stdout.write(`\n\n******Server started on ${PORT}********\n\n`);
+    process.stdout.write(`\n\n****** Server started on ${PORT} ********\n\n`);
   });
 };

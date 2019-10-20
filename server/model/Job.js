@@ -5,10 +5,10 @@ class Job {
     const createJobTableQuery = `CREATE TABLE IF NOT EXISTS Job(
       jid INT AUTO_INCREMENT,
       addedBy INT NOT NULL,
-      title VARCHAR(255),
-      description VARCHAR(600),
-      location VARCHAR(600),
-      tags VARCHAR(255),
+      title VARCHAR(255) NOT NULL,
+      description VARCHAR(600) NOT NULL,
+      location VARCHAR(600) NOT NULL,
+      tags VARCHAR(255) NOT NULL,
       PRIMARY KEY (jid),
       FOREIGN KEY (addedBy) REFERENCES Account(uid)
     )`;
@@ -28,19 +28,14 @@ class Job {
         '${jobData.tags}'
       )
     `;
-    try {
-      let id = null;
-      con.connect((conError) => {
-        if (conError) throw conError;
-        con.query(query, (error, result) => {
-          if (error) throw error;
-          id = result.insertId;
-        });
+    const jid = await new Promise((resolve) => {
+      con.query(query, (error, result) => {
+        if (error) throw error;
+        // id = result.insertId;
+        resolve(result.insertId);
       });
-      return id;
-    } catch (error) {
-      return null;
-    }
+    });
+    return jid;
   }
 }
 

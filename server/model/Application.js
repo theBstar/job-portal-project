@@ -5,7 +5,7 @@ class Application {
     const createApplicationTableQuery = `CREATE TABLE IF NOT EXISTS Application(
       jid INT NOT NULL,
       uid INT NOT NULL,
-      status INT CHECK (status IN (0, 1, 2)),
+      status INT NOT NULL,
       FOREIGN KEY (uid) REFERENCES Account(uid),
       FOREIGN KEY (jid) REFERENCES Job(jid)
     )`;
@@ -20,22 +20,18 @@ class Application {
       VALUES (
         '${applicationData.jid}', 
         '${applicationData.uid}',
-        '${applicationData.status}',
+        '${applicationData.status}'
       )
     `;
-    try {
-      let id = null;
-      con.connect((conError) => {
-        if (conError) throw conError;
-        con.query(query, (error, result) => {
-          if (error) throw error;
-          id = result.insertId;
-        });
+
+    const applicationId = await new Promise((resolve) => {
+      con.query(query, (error, result) => {
+        if (error) throw error;
+        // id = result.insertId;
+        resolve(result.insertId);
       });
-      return id;
-    } catch (error) {
-      return null;
-    }
+    });
+    return applicationId;
   }
 }
 

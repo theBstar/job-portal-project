@@ -1,9 +1,9 @@
-const Account = require('./Account.model');
-const Application = require('./Application.model');
-const Candidate = require('./Candidate.model');
-const Job = require('./Job.model');
-const Recruiter = require('./Recruiter.model');
-const User = require('./User.model');
+const Account = require('./Account');
+const Application = require('./Application');
+const Candidate = require('./Candidate');
+const Job = require('./Job');
+const Recruiter = require('./Recruiter');
+const User = require('./User');
 
 const connection = require('./connection');
 
