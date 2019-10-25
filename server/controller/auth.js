@@ -20,15 +20,18 @@ router.post('/login', async (req, res) => {
 
   try {
     const {
-      logiMethod, token, email,
+      loginMethod, token, email,
     } = req.body.data;
     const plainPassword = req.body.data.password;
-    if (logiMethod === 'token') {
+    if (loginMethod === 'token') {
       // do token login here
       const user = await Account.findOneWithToken(token);
       if (!user) throw Error(MSG_INVALID_TOKEN);
       responseObject.status = 'success';
       responseObject.message = MSG_LOGIN_SUCCESS;
+      responseObject.data = {
+        uid: user.uid,
+      };
     } else {
       // do data login here
       const user = await Account.findOne(email);
@@ -40,6 +43,7 @@ router.post('/login', async (req, res) => {
       responseObject.message = MSG_LOGIN_SUCCESS;
       responseObject.data = {
         token: user.token,
+        uid: user.uid,
       };
     }
   } catch (e) {

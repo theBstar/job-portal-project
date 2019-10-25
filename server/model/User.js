@@ -41,6 +41,19 @@ class User {
     });
     return success;
   }
+
+  static async findById(uid) {
+    const query = `SELECT * FROM User
+    WHERE uid = '${uid}'`;
+    const user = await new Promise((resolve) => {
+      con.query(query, (error, result) => {
+        if (error) throw error;
+        // id = result.insertId;
+        resolve(result[0]);
+      });
+    });
+    return user;
+  }
 }
 
 module.exports = User;

@@ -50,14 +50,14 @@ class Account {
   static async findOne(email) {
     const query = `SELECT * FROM Account
     WHERE email = '${email}'`;
-    const uid = await new Promise((resolve) => {
+    const user = await new Promise((resolve) => {
       con.query(query, (error, result) => {
         if (error) throw error;
         // id = result.insertId;
         resolve(result[0]);
       });
     });
-    return uid;
+    return user;
   }
 
   static async setToken(uid, token) {
