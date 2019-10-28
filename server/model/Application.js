@@ -6,6 +6,7 @@ class Application {
       jid INT NOT NULL,
       uid INT NOT NULL,
       status INT NOT NULL,
+      message VARCHAR(1200) NOT NULL,
       FOREIGN KEY (uid) REFERENCES Account(uid),
       FOREIGN KEY (jid) REFERENCES Job(jid)
     )`;
@@ -16,11 +17,12 @@ class Application {
   }
 
   static async create(applicationData) {
-    const query = `INSERT INTO Application (jid, uid, status) 
+    const query = `INSERT INTO Application (jid, uid, status, message) 
       VALUES (
         '${applicationData.jid}', 
         '${applicationData.uid}',
-        '${applicationData.status}'
+        '${applicationData.status}',
+        '${applicationData.message}'
       )
     `;
 

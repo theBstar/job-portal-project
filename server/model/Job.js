@@ -8,7 +8,7 @@ class Job {
       title VARCHAR(255) NOT NULL,
       description VARCHAR(600) NOT NULL,
       location VARCHAR(600) NOT NULL,
-      tags VARCHAR(255) NOT NULL,
+      tag VARCHAR(255) NOT NULL,
       PRIMARY KEY (jid),
       FOREIGN KEY (addedBy) REFERENCES Account(uid)
     )`;
@@ -19,13 +19,13 @@ class Job {
   }
 
   static async create(jobData) {
-    const query = `INSERT INTO Job (addedBy, title, description, location, tags) 
+    const query = `INSERT INTO Job (addedBy, title, description, location, tag) 
       VALUES (
         '${jobData.addedBy}', 
         '${jobData.title}',
         '${jobData.description}',
         '${jobData.location}',
-        '${jobData.tags}'
+        '${jobData.tag}'
       )
     `;
     const jid = await new Promise((resolve) => {

@@ -1,9 +1,10 @@
 const con = require('./connection');
 
 // Recruiter status:
-//   # 0 - not verified
-//   # 1 - verified
-//   # 2 - rejected
+//   # 0 - unverified
+//   # 1 - active
+//   # 2 - suspended
+//   # 3 - rejected
 
 class Recruiter {
   static init() {
