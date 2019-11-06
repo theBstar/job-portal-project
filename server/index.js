@@ -2,7 +2,14 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { userRouter, authRouter, accountRouter } = require('./controller');
+const {
+  userRouter,
+  authRouter,
+  accountRouter,
+  jobRouter,
+  adminRouter,
+} = require('./controller');
+
 const {
   Account,
   User,
@@ -37,6 +44,8 @@ app.use(express.static(path.join(__dirname, '../client/build')));
 app.use('/account', accountRouter);
 app.use('/user', userRouter);
 app.use('/auth', authRouter);
+app.use('/job', jobRouter);
+app.use('/admin', adminRouter);
 
 app.get('/*', async (req, res) => {
   // console.log('Got a request');

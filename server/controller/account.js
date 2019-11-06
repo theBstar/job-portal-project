@@ -44,9 +44,9 @@ router.post('/new', async (req, res) => {
 
     if (userType.toLowerCase() === 'recruiter') {
       // register the recruiter
-      const { possition, company } = user;
+      const { position, company } = user;
 
-      if (!([possition, company].every((e) => e))) {
+      if (!([position, company].every((e) => e))) {
         throw Error(MSG_DATA_INSUFFICIENT_ERROR);
       }
 
@@ -70,7 +70,7 @@ router.post('/new', async (req, res) => {
 
       const isRecruiterEntrySuccess = await Recruiter.create({
         uid,
-        possition,
+        position,
         company,
         status: 0,
       });

@@ -37,6 +37,21 @@ class Job {
     });
     return jid;
   }
+
+  static async find(location, tag) {
+    let query = `SELECT * FROM Job
+    WHERE location = '${location}'`;
+    if (tag) {
+      query += ` AND tag='${tag}'`;
+    }
+    const jobs = await new Promise((resolve) => {
+      con.query(query, (error, result) => {
+        if (error) throw error;
+        resolve(result);
+      });
+    });
+    return jobs;
+  }
 }
 
 module.exports = Job;
