@@ -38,6 +38,18 @@ class Job {
     return jid;
   }
 
+  static async findById(jid) {
+    const query = `SELECT * FROM Job
+    WHERE jid='${jid}'`;
+    const job = await new Promise((resolve) => {
+      con.query(query, (error, result) => {
+        if (error) throw error;
+        resolve(result[0]);
+      });
+    });
+    return job;
+  }
+
   static async find(location, tag) {
     let query = `SELECT * FROM Job
     WHERE location = '${location}'`;
@@ -52,6 +64,20 @@ class Job {
     });
     return jobs;
   }
+
+
+  static async findByRecruiter(uid) {
+    const query = `SELECT * FROM Job
+    WHERE addedBy='${uid}'`;
+    const jobs = await new Promise((resolve) => {
+      con.query(query, (error, result) => {
+        if (error) throw error;
+        resolve(result);
+      });
+    });
+    return jobs;
+  }
 }
+
 
 module.exports = Job;

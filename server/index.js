@@ -8,6 +8,8 @@ const {
   accountRouter,
   jobRouter,
   adminRouter,
+  recruiterRouter,
+  applicationRouter,
 } = require('./controller');
 
 const {
@@ -44,8 +46,10 @@ app.use(express.static(path.join(__dirname, '../client/build')));
 app.use('/account', accountRouter);
 app.use('/user', userRouter);
 app.use('/auth', authRouter);
+app.use('/recruiter', recruiterRouter);
 app.use('/job', jobRouter);
 app.use('/admin', adminRouter);
+app.use('/application', applicationRouter);
 
 app.get('/*', async (req, res) => {
   // console.log('Got a request');
