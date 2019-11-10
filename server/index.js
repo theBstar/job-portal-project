@@ -51,11 +51,8 @@ app.use('/job', jobRouter);
 app.use('/admin', adminRouter);
 app.use('/application', applicationRouter);
 
-app.get('/*', async (req, res) => {
-  // console.log('Got a request');
-  // todo: uncomment later
-  // res.sendFile(path.resolve('./client/build/index.html'));
-  res.send('<h1>Hi from the app</h1>');
+app.get('*', async (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
 
