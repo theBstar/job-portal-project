@@ -5,15 +5,14 @@ const {
   MSG_INVALID_CREDS,
 } = require('../constants/statusMessage');
 const Account = require('../model/Account');
-// const Job = require('../model/Job');
-// const User = require('../model/User');
+const Candidate = require('../model/Candidate');
+const User = require('../model/User');
 const Recruiter = require('../model/Recruiter');
 const Job = require('../model/Job');
 const Application = require('../model/Application');
 
 const router = express.Router();
 
-// job routes
 
 router.get('/', async (req, res) => {
   const responseObject = {
@@ -32,6 +31,71 @@ router.get('/', async (req, res) => {
     responseObject.status = 'success';
     responseObject.message = '';
     responseObject.data = recruiter;
+  } catch (e) {
+    responseObject.status = 'failed';
+    responseObject.message = e.message;
+  } finally {
+    res.json(responseObject);
+  }
+});
+
+
+router.get('/applicant/:id', async (req, res) => {
+  const responseObject = {
+    status: 'failed',
+    message: MSG_INTERNAL_ERROR,
+    data: null,
+  };
+  try {
+    const { authorization: token } = req.headers;
+    if (!token) throw Error(MSG_DATA_INSUFFICIENT_ERROR);
+    const account = await Account.findOneWithToken(token);
+    if (!account) throw Error(MSG_INVALID_CREDS);
+
+    const recruiter = await Recruiter.findById(account.uid);
+    if (!recruiter) throw Error(MSG_INTERNAL_ERROR);
+    const applicant = await Application.findById(Number.parseInt(req.params.id, 10));
+    if (!applicant) throw Error(MSG_DATA_INSUFFICIENT_ERROR);
+    const user = await User.findById(applicant.uid);
+    const candidateProfile = await Candidate.findByUid(applicant.uid);
+
+    responseObject.status = 'success';
+    responseObject.message = '';
+    responseObject.data = {
+      ...applicant,
+      ...user,
+      ...candidateProfile,
+    };
+  } catch (e) {
+    responseObject.status = 'failed';
+    responseObject.message = e.message;
+    responseObject.data = null;
+  } finally {
+    res.json(responseObject);
+  }
+});
+
+
+router.put('/applicant', async (req, res) => {
+  const responseObject = {
+    status: 'failed',
+    message: MSG_INTERNAL_ERROR,
+  };
+  try {
+    const { authorization: token } = req.headers;
+    if (!token) throw Error(MSG_DATA_INSUFFICIENT_ERROR);
+    const account = await Account.findOneWithToken(token);
+    if (!account) throw Error(MSG_INVALID_CREDS);
+
+    const recruiter = await Recruiter.findById(account.uid);
+    if (!recruiter) throw Error(MSG_INTERNAL_ERROR);
+
+    const { id, status, message } = req.body;
+    const isSuccess = await Application.updateStatus(id, status, message);
+    if (!isSuccess) throw Error('Could not update');
+
+    responseObject.status = 'success';
+    responseObject.message = 'Updated successfuly';
   } catch (e) {
     responseObject.status = 'failed';
     responseObject.message = e.message;
@@ -89,7 +153,15 @@ router.get('/job/:id', async (req, res) => {
 
     job.applicants = [];
     if (applicants) {
-      job.applicants = applicants;
+      job.applicants = await Promise.all(applicants.map(async (applicant) => {
+        const user = await User.findById(applicant.uid);
+        const candidate = await Candidate.findByUid(applicant.uid);
+        return {
+          ...applicant,
+          ...user,
+          ...candidate,
+        };
+      }));
     }
     responseObject.status = 'success';
     responseObject.message = '';
