@@ -25,7 +25,12 @@
   "scripts": {
     "test": "test",
     "start": "node index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build",
+    "build-clear": "rm -rf ./clientBuild/* && rm -rf ./client/build",
+    "build-client": "cd client && npm run build",
+    "build-copy": "cp ./client/build/* ./clientBuild/ -r",
+    "build-prod": "npm run build-clear && npm run build-client && npm run build-copy",
+    "git-magic": "git add . && git commit -m \"latest build copied to deploy\"",
+    "deploy-heroku": "npm run build-prod && npm run git-magic && git push heroku master",
     "start-server": "nodemon index.js",
     "start-client": "cd client && npm start",
     "start-dev": "concurrently \"npm run start-server\" \"npm run start-client\""
