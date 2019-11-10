@@ -38,7 +38,7 @@ try {
 }
 
 const app = express();
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '../clientBuild')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -53,7 +53,7 @@ app.use('/admin', adminRouter);
 app.use('/application', applicationRouter);
 
 app.get('*', async (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  res.sendFile(path.join(__dirname, '../clientBuild/index.html'));
 });
 
 
